@@ -1,8 +1,8 @@
 import os
 import string
 import random
-import psycopg2
-import psycopg2.extras
+import psycopg
+from psycopg.rows import dict_row
 from datetime import datetime, timezone
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
@@ -18,7 +18,7 @@ DATABASE_URL = os.environ.get(
 BASE_URL = os.environ.get("BASE_URL", "https://doglet-drafts-production.up.railway.app")
 
 def get_db():
-    return psycopg2.connect(DATABASE_URL)
+    return psycopg.connect(DATABASE_URL)
 
 def gen_id(length=8):
     chars = string.ascii_letters + string.digits
@@ -105,7 +105,7 @@ def delete_draft(draft_id: str):
 @app.get("/api/drafts/{draft_id}")
 def get_draft_json(draft_id: str):
     conn = get_db()
-    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cur = conn.cursor(row_factory=dict_row)
     cur.execute(
         "SELECT * FROM drafts WHERE id=%s AND (expires_at > NOW() OR expires_at IS NULL)",
         (draft_id,)

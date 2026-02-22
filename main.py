@@ -159,7 +159,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--t
 .content-area:empty::before{content:'Draft content...';color:var(--text-secondary)}
 .content-area:focus{border-color:var(--accent-primary)}
 .char-count{text-align:right;font-size:12px;color:var(--text-secondary);margin-bottom:16px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.actions .btn-full{grid-column:1/-1}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:12px;border:1px solid var(--border-subtle);
   background:var(--bg-elevated);color:var(--text-primary);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
   cursor:pointer;text-decoration:none;transition:all .15s;-webkit-tap-highlight-color:transparent}
@@ -193,7 +194,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg-primary);color:var(--t
     <button class="btn" id="btnCopy" onclick="copyDraft()">📋 Copy</button>
     <button class="btn" id="btnEmail" onclick="openEmail()">📧 Email</button>
     <button class="btn" id="btnText" onclick="openText()">💬 Text</button>
-    <button class="btn btn-primary" id="btnShare" onclick="shareDraft()">↗ Share</button>
+    <button class="btn" id="btnWhatsApp" onclick="openWhatsApp()" style="background:#25D366;border-color:#25D366;color:#fff">💬 WhatsApp</button>
+    <button class="btn btn-primary" id="btnShare" onclick="shareDraft()" style="grid-column:span 2">↗ Share</button>
   </div>
 </div>
 <div id="error" style="display:none" class="error-page">
@@ -285,6 +287,10 @@ function openEmail() {
 
 function openText() {
   window.location.href = `sms:?body=${enc(getContent())}`;
+}
+
+function openWhatsApp() {
+  window.location.href = `https://wa.me/?text=${enc(getContent())}`;
 }
 
 async function shareDraft() {
